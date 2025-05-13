@@ -1,16 +1,33 @@
-PID   | Time                    | Level    | Function       |  Location:No | Message
-------+-------------------------+----------+----------------+--------------+-----------------------------------------
-53358 | 2025-05-13 14:13:46,887 | 🟢 debug | supermegaprint |   temp.py:9  | nam kha
-53358 | 2025-05-13 14:13:46,889 | 🟢 debug | myfunc         | inside.py:7  | 123
-53358 | 2025-05-13 14:13:47,893 | 🟢 debug | supermegaprint |   temp.py:9  | nam kha
-53358 | 2025-05-13 14:13:47,893 | 🟢 debug | myfunc         | inside.py:7  | 123
-53358 | 2025-05-13 14:13:48,665 | 🔴 error | log_context    |     logab:0  | 
-------+-------------------------+----------+----------------+--------------+-----------------------------------------
+PID   | Time                    | Level       | Function                 |           Location:No | Message
+------+-------------------------+-------------+--------------------------+-----------------------+-----------------------------------------
+79239 | 2025-05-13 20:04:18,920 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:18,920 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:19,924 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:19,925 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:20,925 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:20,925 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:20,925 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:20,925 | 🟡 warning  | <module>                 |            test.py:18 | Loss: 2 游客
+79239 | 2025-05-13 20:04:20,925 | 🟣 critical | <module>                 |            test.py:19 | Loss: 2 au cuộc đàm phán cuối tuần trước, Mỹ và Trung Quốc thống nhất tạm hoãn một phần thuế đối ứng trong 90 ngày, đồng thời giảm đáng kể tổng thuế nhập khẩu.
+79239 | 2025-05-13 20:04:20,926 | 🟢 debug    | print_somethingggggggggg | utils / newfunc.py:6  | Im the best
+79239 | 2025-05-13 20:04:21,926 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:21,926 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:22,927 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:22,927 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:22,927 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:22,927 | 🟡 warning  | <module>                 |            test.py:18 | Loss: 4 游客
+79239 | 2025-05-13 20:04:22,927 | 🟣 critical | <module>                 |            test.py:19 | Loss: 4 au cuộc đàm phán cuối tuần trước, Mỹ và Trung Quốc thống nhất tạm hoãn một phần thuế đối ứng trong 90 ngày, đồng thời giảm đáng kể tổng thuế nhập khẩu.
+79239 | 2025-05-13 20:04:22,927 | 🟢 debug    | print_somethingggggggggg | utils / newfunc.py:6  | Im the best
+79239 | 2025-05-13 20:04:23,928 | 🟢 debug    | supermegaprint           |            temp.py:9  | nam kha
+79239 | 2025-05-13 20:04:23,928 | 🟢 debug    | myfunc                   |          inside.py:7  | 123
+79239 | 2025-05-13 20:04:23,929 | 🔴 error    | log_context              |              logab:0  | [Errno 2] No such file or directory: 'abc.txt'
+------+-------------------------+-------------+--------------------------+-----------------------+-----------------------------------------
 Traceback (most recent call last):
-  File "/home/namkha/Documents/mydev/lognk/logab/log_utils.py", line 153, in log_context
+  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 153, in log_context
     yield
-  File "/home/namkha/Documents/mydev/lognk/test.py", line 13, in <module>
-    time.sleep(1)
-KeyboardInterrupt
-------+-------------------------+----------+----------------+--------------+-----------------------------------------
-53358 | 2025-05-13 14:13:48,665 | 🔵 info  | log_context    |     logab:0  | Execution time 2.7786 seconds
+  File "/home/namkha/Documents/mydev/logab/test.py", line 24, in <module>
+    with open('abc.txt', 'r') as file:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
+------+-------------------------+-------------+--------------------------+-----------------------+-----------------------------------------
+79239 | 2025-05-13 20:04:23,929 | 🔵 info     | log_context              |              logab:0  | Execution time 6.0091 seconds

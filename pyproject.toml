@@ -1,0 +1,18 @@
+[project]
+name = "logab" 
+version = "0.1.0"
+description = "A lightweight Python package for logging with auto-balance (ab) formatting."
+readme = "README.md"
+authors = [
+    { name = "Nam Kha Nguyen", email = "namkha1032@gmail.com" }
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/namkha1032/logab"
+Repository = "https://github.com/namkha1032/logab"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
