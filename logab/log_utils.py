@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+import sys
 import time
 import traceback
 from contextlib import contextmanager
@@ -10,7 +11,7 @@ def log_init():
     logger = logging.getLogger(__name__)
     return logger
     
-class NKFormatter(logging.Formatter):
+class ABFormatter(logging.Formatter):
     attr_tup = [('process', 3), ('asctime', 23), ('levelname', 4), ('funcName', 8), ('pathname', 4), ('lineno', 2)]
     max_lengths = {key:val for key, val in attr_tup}
     def __init__(self, log_file):
@@ -25,7 +26,7 @@ class NKFormatter(logging.Formatter):
             with open (self.log_file, 'r', encoding='utf-8') as file_log:
                 for idx, line in enumerate(file_log):
                     line = line.strip()
-                    if idx == 1:
+                    if line.startswith("----"):
                         hor_line = self.draw_horizontal_line()
                         file_backup.write(f"{hor_line}\n")
                     else:
@@ -43,14 +44,11 @@ class NKFormatter(logging.Formatter):
                                 newline_arr.append(attr)
                         newline_arr.append(attr_list[-1].strip())
                         file_backup.write(f"{' | '.join(newline_arr)}\n")
-                        
-                        
         try:
             shutil.copyfile(bak_path, self.log_file)
             os.remove(bak_path)
         except Exception as e:
             pass
-        pass
     
     @classmethod
     def draw_horizontal_line(cls, placement="+"):
@@ -133,20 +131,20 @@ def format_seconds(seconds):
     
     return " ".join(result)
 
+
 @contextmanager
 def log_wrap(log_file='./app.log', log_level="notset"):
     log_level=getattr(logging, log_level.upper(), logging.NOTSET)
     handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
-    formatter = NKFormatter(log_file)
+    formatter = ABFormatter(log_file)
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
     with open (log_file, 'w', encoding='utf-8') as file:
-        newstr = """PID | Time | Level | Function | File:No | Message\n."""
+        newstr = """PID | Time | Level | Function | File:No | Message\n----+------+-------+----------+---------+--------"""
         file.write(newstr)
     start_time = time.time()
-    root_logger.info("Program starts...")
     try:
         yield
     except Exception as e:
@@ -156,12 +154,11 @@ def log_wrap(log_file='./app.log', log_level="notset"):
             hor_line = formatter.draw_horizontal_line(placement='+')
             file.write(f"{hor_line}\n")
             file.write(tb)
-            
         exit()
     finally:
+        end_time = time.time()
         hor_line = formatter.draw_horizontal_line(placement='+')
         with open(log_file, 'a', encoding='utf-8') as file:
             file.write(f"{hor_line}\n")
-        end_time = time.time()
         root_logger.info(f"Execution time {format_seconds(end_time-start_time)}")
 

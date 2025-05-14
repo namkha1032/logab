@@ -1,24 +1,23 @@
 PID   | Time                    | Level       | Function             |                    File:No | Message
 ------+-------------------------+-------------+----------------------+----------------------------+-----------------------------------------
-34270 | 2025-05-14 13:30:19,375 | 🔵 info     | log_wrap             |                   logab:0  | Program starts...
-34270 | 2025-05-14 13:30:20,379 | 🔵 info     | <module>             |                 main.py:20 | 0
-34270 | 2025-05-14 13:30:21,379 | 🔵 info     | <module>             |                 main.py:20 | 1
-34270 | 2025-05-14 13:30:21,379 | 🟡 warning  | print_main           |                 main.py:13 | In log main
-34270 | 2025-05-14 13:30:22,380 | 🔵 info     | <module>             |                 main.py:20 | 2
-34270 | 2025-05-14 13:30:22,380 | 🟢 debug    | supermegaprint       |           tests/temp.py:13 | nam kha
-34270 | 2025-05-14 13:30:22,381 | 🟡 warning  | <module>             |                 main.py:25 | Loss: 2 游客
-34270 | 2025-05-14 13:30:22,381 | 🟣 critical | <module>             |                 main.py:26 | Loss: 2 au cuộc đàm phán cuối tuần trước, Mỹ và Trung Quốc thống nhất tạm hoãn một phần thuế đối ứng trong 90 ngày, đồng thời giảm đáng kể tổng thuế nhập khẩu.
-34270 | 2025-05-14 13:30:23,381 | 🔵 info     | <module>             |                 main.py:20 | 3
-34270 | 2025-05-14 13:30:24,381 | 🔵 info     | <module>             |                 main.py:20 | 4
-34270 | 2025-05-14 13:30:25,382 | 🔵 info     | <module>             |                 main.py:20 | 5
-34270 | 2025-05-14 13:30:25,382 | 🟢 debug    | a_very_long_function |           tests/temp.py:17 | nam kha
-34270 | 2025-05-14 13:30:26,383 | 🔵 info     | <module>             |                 main.py:20 | 6
-34270 | 2025-05-14 13:30:26,383 | 🟢 debug    | newfunc              | tests/utils/newutils.py:6  | Im the best
-34270 | 2025-05-14 13:30:27,384 | 🔵 info     | <module>             |                 main.py:20 | 7
-34270 | 2025-05-14 13:30:27,385 | 🔴 error    | log_wrap             |                   logab:0  | [Errno 2] No such file or directory: 'abc.txt'
+48896 | 2025-05-14 16:22:41,472 | 🔵 info     | <module>             |                 main.py:20 | 0
+48896 | 2025-05-14 16:22:42,473 | 🔵 info     | <module>             |                 main.py:20 | 1
+48896 | 2025-05-14 16:22:42,473 | 🟡 warning  | print_main           |                 main.py:13 | In log main
+48896 | 2025-05-14 16:22:43,473 | 🔵 info     | <module>             |                 main.py:20 | 2
+48896 | 2025-05-14 16:22:43,474 | 🟢 debug    | supermegaprint       |           tests/temp.py:13 | nam kha
+48896 | 2025-05-14 16:22:43,474 | 🟡 warning  | <module>             |                 main.py:25 | Loss: 2 游客
+48896 | 2025-05-14 16:22:43,474 | 🟣 critical | <module>             |                 main.py:26 | Loss: 2 au cuộc đàm phán cuối tuần trước, Mỹ và Trung Quốc thống nhất tạm hoãn một phần thuế đối ứng trong 90 ngày, đồng thời giảm đáng kể tổng thuế nhập khẩu.
+48896 | 2025-05-14 16:22:44,475 | 🔵 info     | <module>             |                 main.py:20 | 3
+48896 | 2025-05-14 16:22:45,475 | 🔵 info     | <module>             |                 main.py:20 | 4
+48896 | 2025-05-14 16:22:46,475 | 🔵 info     | <module>             |                 main.py:20 | 5
+48896 | 2025-05-14 16:22:46,476 | 🟢 debug    | a_very_long_function |           tests/temp.py:17 | nam kha
+48896 | 2025-05-14 16:22:47,476 | 🔵 info     | <module>             |                 main.py:20 | 6
+48896 | 2025-05-14 16:22:47,477 | 🟢 debug    | newfunc              | tests/utils/newutils.py:6  | Im the best
+48896 | 2025-05-14 16:22:48,477 | 🔵 info     | <module>             |                 main.py:20 | 7
+48896 | 2025-05-14 16:22:48,478 | 🔴 error    | log_wrap             |                   logab:0  | [Errno 2] No such file or directory: 'abc.txt'
 ------+-------------------------+-------------+----------------------+----------------------------+-----------------------------------------
 Traceback (most recent call last):
-  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 151, in log_wrap
+  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 149, in log_wrap
     yield
   File "/home/namkha/Documents/mydev/logab/main.py", line 32, in <module>
     cause_error()
@@ -31,4 +30,4 @@ Traceback (most recent call last):
          ^^^^^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
 ------+-------------------------+-------------+----------------------+----------------------------+-----------------------------------------
-34270 | 2025-05-14 13:30:27,385 | 🔵 info     | log_wrap             |                   logab:0  | Execution time 8.0100 seconds
+48896 | 2025-05-14 16:22:48,479 | 🔵 info     | log_wrap             |                   logab:0  | Execution time 8.0066 seconds
