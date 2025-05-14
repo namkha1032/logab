@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: logab
-Version: 0.1.0
+Version: 1.2.4
 Summary: A lightweight Python package for logging with auto-balance (ab) formatting.
 Author-email: Nam Kha Nguyen <namkha1032@gmail.com>
 License: MIT License
@@ -30,3 +30,18 @@ Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Dynamic: license-file
+
+# logab
+A lightweight Python package for better formatting.
+## Install
+```
+pip install logab
+```
+## Usage
+```
+pip install logab
+```
+## Demo
+![Alt Text](demo.gif)
+![Alt text](https://ngdblog.africa/wp-content/uploads/2023/01/Wow-gif.gif)
+<img src="demo.gif" alt="Descriptive text" />

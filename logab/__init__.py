@@ -1,1 +1,1 @@
-from .log_utils import log_context, log_init
+from .log_utils import log_init, log_wrap

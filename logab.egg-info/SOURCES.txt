@@ -1,4 +1,5 @@
 LICENSE
+MANIFEST.in
 README.md
 pyproject.toml
 logab/__init__.py
@@ -7,4 +8,3 @@ logab.egg-info/PKG-INFO
 logab.egg-info/SOURCES.txt
 logab.egg-info/dependency_links.txt
 logab.egg-info/top_level.txt
-tests/test.py

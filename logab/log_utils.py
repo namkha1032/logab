@@ -11,7 +11,7 @@ def log_init():
     return logger
     
 class NKFormatter(logging.Formatter):
-    attr_tup = [('process', 3), ('asctime', 23), ('levelname', 4), ('funcName', 8), ('pathname', 8), ('lineno', 2)]
+    attr_tup = [('process', 3), ('asctime', 23), ('levelname', 4), ('funcName', 8), ('pathname', 4), ('lineno', 2)]
     max_lengths = {key:val for key, val in attr_tup}
     def __init__(self, log_file):
         self.log_file = log_file
@@ -70,7 +70,8 @@ class NKFormatter(logging.Formatter):
         abs_path = record.pathname
         rel_path = os.path.relpath(abs_path, start=os.getcwd())
         lib_name = "logab"
-        record.pathname = rel_path.replace("/", " / ") if record.module != "log_utils" else lib_name
+        # rel_path = rel_path.replace("/", " / ")
+        record.pathname = rel_path if record.module != "log_utils" else lib_name
         record.lineno = record.lineno if record.pathname != lib_name else 0
         
         # Debug level emoji
@@ -118,15 +119,13 @@ def format_seconds(seconds):
     result = []
     remaining = float(seconds)
     
-    for unit_name, unit_seconds in units[:-1]:  # Process all units except the last
+    for unit_name, unit_seconds in units[:-1]:
         if remaining >= unit_seconds:
             value = int(remaining // unit_seconds)
             remaining = remaining % unit_seconds
             result.append(f"{value} {unit_name}{'s' if value > 1 else ''}")
     
-    # Handle the last unit (seconds) separately to keep float
-    if remaining > 0 or not result:  # Include seconds if there's a remainder or no other units
-        # Format to avoid unnecessary decimal places for whole numbers
+    if remaining > 0 or not result: 
         if remaining.is_integer():
             result.append(f"{int(remaining)} second{'s' if remaining != 1 else ''}")
         else:
@@ -135,8 +134,8 @@ def format_seconds(seconds):
     return " ".join(result)
 
 @contextmanager
-def log_context(log_file='app.log', log_level=logging.NOTSET):
-    
+def log_wrap(log_file='./app.log', log_level="notset"):
+    log_level=getattr(logging, log_level.upper(), logging.NOTSET)
     handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = NKFormatter(log_file)
     handler.setFormatter(formatter)
@@ -144,11 +143,10 @@ def log_context(log_file='app.log', log_level=logging.NOTSET):
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
     with open (log_file, 'w', encoding='utf-8') as file:
-        newstr = """PID | Time | Level | Function | Location:No | Message\n."""
+        newstr = """PID | Time | Level | Function | File:No | Message\n."""
         file.write(newstr)
-    # root_logger.info("Context init")
     start_time = time.time()
-    
+    root_logger.info("Program starts...")
     try:
         yield
     except Exception as e:
@@ -158,10 +156,12 @@ def log_context(log_file='app.log', log_level=logging.NOTSET):
             hor_line = formatter.draw_horizontal_line(placement='+')
             file.write(f"{hor_line}\n")
             file.write(tb)
-            file.write(f"{hor_line}\n")
             
         exit()
     finally:
+        hor_line = formatter.draw_horizontal_line(placement='+')
+        with open(log_file, 'a', encoding='utf-8') as file:
+            file.write(f"{hor_line}\n")
         end_time = time.time()
         root_logger.info(f"Execution time {format_seconds(end_time-start_time)}")
 

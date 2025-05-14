@@ -1,6 +1,6 @@
 from logab import log_init
 
 
-def print_somethingggggggggg():
+def newfunc():
     logger = log_init()
     logger.debug("Im the best")
