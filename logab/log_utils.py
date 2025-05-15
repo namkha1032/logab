@@ -1,3 +1,4 @@
+import builtins
 import logging
 import os
 import shutil
@@ -5,6 +6,7 @@ import sys
 import time
 import traceback
 from contextlib import contextmanager
+from functools import partial
 
 
 def log_init():
@@ -65,19 +67,24 @@ class ABFormatter(logging.Formatter):
         
     def format(self, record):
         rewrite = False
+        
+        if hasattr(record, 'func_id'):
+            record.pathname = record.file_id
+            record.funcName = record.func_id
+            record.lineno = record.line_id
+        
         abs_path = record.pathname
         rel_path = os.path.relpath(abs_path, start=os.getcwd())
         lib_name = "logab"
-        # rel_path = rel_path.replace("/", " / ")
-        record.pathname = rel_path if record.module != "log_utils" else lib_name
+        record.pathname = rel_path if record.module != "log_utils" or hasattr(record, 'func_id') else lib_name
         record.lineno = record.lineno if record.pathname != lib_name else 0
         
         # Debug level emoji
         level_emoji = {
-            "DEBUG": "🟢",
-            "INFO": "🔵",
-            "WARNING": "🟡",
-            "ERROR": "🔴",
+            "DEBUG":    "🟢",
+            "INFO":     "🔵",
+            "WARNING":  "🟡",
+            "ERROR":    "🔴",
             "CRITICAL": "🟣"
         }
         record.levelname = f"{level_emoji[record.levelname]} {record.levelname.lower()}"
@@ -131,23 +138,47 @@ def format_seconds(seconds):
     
     return " ".join(result)
 
+def logab_custom_print(print_level, *args, **kwargs):
+    # Combine arguments into a single message
+    sep = kwargs.get('sep', ' ')
+    end = kwargs.get('end', '')
+    message = sep.join(str(arg) for arg in args) + end
+    frame = traceback.extract_stack()[-2]
+    filename = frame.filename
+    funcname = frame.name
+    lineno = frame.lineno
+    # Log the message at the specified print_level
+    logging.log(print_level, message, extra={
+            'file_id': filename,
+            'func_id': funcname,
+            'line_id': lineno
+        })
 
 @contextmanager
-def log_wrap(log_file='./app.log', log_level="notset"):
-    log_level=getattr(logging, log_level.upper(), logging.NOTSET)
+def log_wrap(log_file='./app.log', log_level="debug", print_level="debug"):
+    # Set up log configuration
+    log_level=getattr(logging, log_level.upper(), logging.DEBUG)
     handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = ABFormatter(log_file)
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
+    
+    # Set up print configuration
+    print_level=getattr(logging, print_level.upper(), logging.DEBUG)
+    builtins.print = partial(logab_custom_print, print_level)
+    
+    # Print table header
     with open (log_file, 'w', encoding='utf-8') as file:
         newstr = """PID | Time | Level | Function | File:No | Message\n----+------+-------+----------+---------+--------"""
         file.write(newstr)
+    
     start_time = time.time()
     try:
         yield
     except Exception as e:
+        # Catch and write error message
         tb = traceback.format_exc()
         root_logger.error(e)
         with open(log_file, 'a', encoding='utf-8') as file:
@@ -156,6 +187,7 @@ def log_wrap(log_file='./app.log', log_level="notset"):
             file.write(tb)
         exit()
     finally:
+        # Write execution time
         end_time = time.time()
         hor_line = formatter.draw_horizontal_line(placement='+')
         with open(log_file, 'a', encoding='utf-8') as file:
