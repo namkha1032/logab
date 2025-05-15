@@ -1,16 +1,32 @@
 # logab 🐢
 A lightweight Python package for structured logging with automatic balance (ab) formatting for cleaner, more readable output.
-- [x] Python built-ins only
-- [x] No dependencies
-- [x] Minimal configuration
+- 🤯 Python built-ins only
+- 🤤 No dependencies
+- 🥵 Minimal set-up
 
-## 1. Install
+
+
+## Table of Contents
+
+- [Introduction](#1-installation-)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Basic Usage](#basic-usage)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Advanced Topics](#advanced-topics)
+  - [Performance Tips](#performance-tips)
+  - [Security Considerations](#security-considerations)
+- [FAQ](#faq)
+- [License](#license)
+
+## 1. Installation 🛠️
 ```sh
 pip install logab
 ```
-## 2. How to use
+## 2. How to use 🔎
 **logab** has two functions: `log_wrap()` and `log_init()`
-### a. log_wrap()
+### a. log_wrap() 🌮
 `log_wrap()` is a ready-to-use wrapper with pre-configured logging. `log_wrap()` should be used **only once** at the program's entry point to configure logging globally. 
 
 **Parameters**:
@@ -18,7 +34,7 @@ pip install logab
 - `log_level`: severity level of log messages being recorded. Defaults to ***"debug"***
 - `print_level`: severity level of all messages output by `print()` command. Defaults ***"debug"***
 
-### b. log_init()
+### b. log_init() 🍉
 The **logab** package supports logging through three methods:
 - Using `print()`: simple built-in Python function for basic output.
 - Using `logging`: Python's standard logging module for structured and configurable logging.
@@ -26,7 +42,7 @@ The **logab** package supports logging through three methods:
 
 All three methods are compatible with the **logab** package, as long as they are used within the `log_wrap()` context. Usage example is provided in the next section.
 
-### c. Usage example
+### c. Example 🍻
 ```python
 import logging
 from logab import log_init, log_wrap
@@ -74,6 +90,6 @@ ZeroDivisionError: division by zero
 ```
 
 
-## 3. Automatic balance
+## 3. Automatic balance ⚖️
 Log messages will be displayed in a table format. Each column automatically adjusts its width to accommodate the longest value in that column, ensuring the entire table remains clearly visible and easy to read.
 ![Alt Text](https://raw.githubusercontent.com/namkha1032/logab/refs/heads/main/demo.gif)
