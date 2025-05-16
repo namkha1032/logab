@@ -51,7 +51,7 @@ if __name__=="__main__":
         x = 0
         print(10/x)
 ```
-Log messages stored in **"./app.log"**:
+Output log messages in **"./app.log"**:
 ```log
 PID   | Time                    | Level       | Function  |    File:No | Message
 ------+-------------------------+-------------+-----------+------------+-----------------------------------------
