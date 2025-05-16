@@ -5,27 +5,12 @@ A lightweight Python package for structured logging with automatic balance (ab) 
 - 🥵 Minimal set-up
 
 
-
-## Table of Contents
-
-- [Introduction](#1-installation-)
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
-  - [Basic Usage](#basic-usage)
-- [Features](#features)
-- [Configuration](#configuration)
-- [Advanced Topics](#advanced-topics)
-  - [Performance Tips](#performance-tips)
-  - [Security Considerations](#security-considerations)
-- [FAQ](#faq)
-- [License](#license)
-
 ## 1. Installation 🛠️
 ```sh
 pip install logab
 ```
 ## 2. How to use 🔎
-**logab** has two functions: `log_wrap()` and `log_init()`
+**logab** provides two functions: `log_wrap()` and `log_init()`
 ### a. log_wrap() 🌮
 `log_wrap()` is a ready-to-use wrapper with pre-configured logging. `log_wrap()` should be used **only once** at the program's entry point to configure logging globally. 
 
@@ -42,7 +27,7 @@ The **logab** package supports logging through three methods:
 
 All three methods are compatible with the **logab** package, as long as they are used within the `log_wrap()` context. Usage example is provided in the next section.
 
-### c. Example 🍻
+### c. example 🍻
 ```python
 import logging
 from logab import log_init, log_wrap
@@ -91,5 +76,5 @@ ZeroDivisionError: division by zero
 
 
 ## 3. Automatic balance ⚖️
-Log messages will be displayed in a table format. Each column automatically adjusts its width to accommodate the longest value in that column, ensuring the entire table remains clearly visible and easy to read.
+Log messages will be displayed in a table format. Each column automatically adjusts its width to fit the longest value in that column, ensuring the entire table remains clearly visible and easy to read.
 ![Alt Text](https://raw.githubusercontent.com/namkha1032/logab/refs/heads/main/demo.gif)
