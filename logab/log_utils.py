@@ -79,7 +79,7 @@ class ABFormatter(logging.Formatter):
         record.pathname = rel_path if record.module != "log_utils" or hasattr(record, 'func_id') else lib_name
         record.lineno = record.lineno if record.pathname != lib_name else 0
         
-        # Debug level emoji
+        # Level emoji
         level_emoji = {
             "DEBUG":    "🟢",
             "INFO":     "🔵",
@@ -155,9 +155,9 @@ def logab_custom_print(print_level, *args, **kwargs):
         })
 
 @contextmanager
-def log_wrap(log_file='./app.log', log_level="debug", print_level="debug"):
+def log_wrap(log_file='./app.log', log_level="info", print_level="info"):
     # Set up log configuration
-    log_level=getattr(logging, log_level.upper(), logging.DEBUG)
+    log_level=getattr(logging, log_level.upper(), logging.info)
     handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = ABFormatter(log_file)
     handler.setFormatter(formatter)
@@ -166,7 +166,7 @@ def log_wrap(log_file='./app.log', log_level="debug", print_level="debug"):
     root_logger.addHandler(handler)
     
     # Set up print configuration
-    print_level=getattr(logging, print_level.upper(), logging.DEBUG)
+    print_level=getattr(logging, print_level.upper(), logging.info)
     builtins.print = partial(logab_custom_print, print_level)
     
     # Print table header

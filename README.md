@@ -4,22 +4,30 @@ A lightweight Python package for structured logging with automatic balance (ab) 
 - 🤤 No dependencies
 - 🥵 Minimal set-up
 
+## Table of Contents
+- [Installation](#️-installation)
+- [How to use](#-how-to-use)
+  - [log\_wrap()](#-log_wrap)
+  - [log\_init()](#-log_init)
+  - [example](#-example)
+- [Automatic balance](#️-automatic-balance)
 
-## 1. Installation 🛠️
+
+## 🛠️ Installation
 ```sh
 pip install logab
 ```
-## 2. How to use 🔎
+## 🔎 How to use
 **logab** provides two functions: `log_wrap()` and `log_init()`
-### a. log_wrap() 🌮
+### 🌮 log_wrap() 
 `log_wrap()` is a ready-to-use wrapper with pre-configured logging. `log_wrap()` should be used **only once** at the program's entry point to configure logging globally. 
 
 **Parameters**:
 - `log_file`: file path for storing logs. Defaults to ***"./app.log"***.
-- `log_level`: severity level of log messages being recorded. Defaults to ***"debug"***
-- `print_level`: severity level of all messages output by `print()` command. Defaults ***"debug"***
+- `log_level`: severity level of log messages being recorded. Defaults to ***"info"***
+- `print_level`: severity level of all messages output by `print()` command. Defaults ***"info"***
 
-### b. log_init() 🍉
+### 🍉 log_init()
 The **logab** package supports logging through three methods:
 - Using `print()`: simple built-in Python function for basic output.
 - Using `logging`: Python's standard logging module for structured and configurable logging.
@@ -27,7 +35,7 @@ The **logab** package supports logging through three methods:
 
 All three methods are compatible with the **logab** package, as long as they are used within the `log_wrap()` context. Usage example is provided in the next section.
 
-### c. example 🍻
+### 🍻 example
 ```python
 import logging
 from logab import log_init, log_wrap
@@ -39,7 +47,7 @@ def main_func():
     # or logab's log_init()
     logger = log_init()
     logger.critical("Critical message using logab's log_init()")
-    # or print() (default level is "debug", can be configured through log_wrap())
+    # or print() (default level is "info", can be configured through log_wrap())
     print("Debug message using print()")
 
 if __name__=="__main__":
@@ -75,6 +83,6 @@ ZeroDivisionError: division by zero
 ```
 
 
-## 3. Automatic balance ⚖️
+## ⚖️ Automatic balance
 Log messages will be displayed in a table format. Each column automatically adjusts its width to fit the longest value in that column, ensuring the entire table remains clearly visible and easy to read.
 ![Alt Text](https://raw.githubusercontent.com/namkha1032/logab/refs/heads/main/demo.gif)
