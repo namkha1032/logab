@@ -72,11 +72,12 @@ class ABFormatter(logging.Formatter):
             record.pathname = record.file_id
             record.funcName = record.func_id
             record.lineno = record.line_id
-        
-        abs_path = record.pathname
-        rel_path = os.path.relpath(abs_path, start=os.getcwd())
         lib_name = "logab"
-        record.pathname = rel_path if record.module != "log_utils" or hasattr(record, 'func_id') else lib_name
+        if record.module != "log_utils" or hasattr(record, 'func_id'):
+            abs_path = record.pathname
+            record.pathname = os.path.relpath(abs_path, start=os.getcwd())
+        else:
+            record.pathname = lib_name
         record.lineno = record.lineno if record.pathname != lib_name else 0
         
         # Level emoji

@@ -1,18 +1,30 @@
-PID   | Time                    | Level       | Function  |    File:No | Message
-------+-------------------------+-------------+-----------+------------+-----------------------------------------
-35814 | 2025-05-15 14:22:15,950 | 🔵 info     | <module>  | main.py:19 | Prepare to do main_func
-35814 | 2025-05-15 14:22:15,954 | 🟡 warning  | main_func | main.py:9  | Warning message using Python's logging
-35814 | 2025-05-15 14:22:15,955 | 🟣 critical | main_func | main.py:12 | Critical message using logab's log_init()
-35814 | 2025-05-15 14:22:15,955 | 🟢 debug    | main_func | main.py:14 | Debug message using print()
-35814 | 2025-05-15 14:22:15,955 | 🔵 info     | <module>  | main.py:21 | Finish main_func
-35814 | 2025-05-15 14:22:15,958 | 🔴 error    | log_wrap  |   logab:0  | division by zero
-------+-------------------------+-------------+-----------+------------+-----------------------------------------
+PID   | Time                    | Level       | Function             |               File:No | Message
+------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+14302 | 2025-05-27 17:23:44,205 | 🔵 info     | <module>             |            main.py:23 | idx: 0
+14302 | 2025-05-27 17:23:45,206 | 🔵 info     | <module>             |            main.py:23 | idx: 1
+14302 | 2025-05-27 17:23:45,206 | 🟡 warning  | print_main           |            main.py:16 | In function of main.py
+14302 | 2025-05-27 17:23:46,206 | 🔵 info     | <module>             |            main.py:23 | idx: 2
+14302 | 2025-05-27 17:23:46,207 | 🟢 debug    | supermegaprint       |      tests/temp.py:12 | nam kha
+14302 | 2025-05-27 17:23:46,207 | 🟡 warning  | <module>             |            main.py:28 | Some warning message
+14302 | 2025-05-27 17:23:47,208 | 🔵 info     | <module>             |            main.py:23 | idx: 3
+14302 | 2025-05-27 17:23:47,208 | 🟣 critical | critical_function    |        critical.py:6  | Some critical message
+14302 | 2025-05-27 17:23:48,209 | 🔵 info     | <module>             |            main.py:23 | idx: 4
+14302 | 2025-05-27 17:23:48,215 | 🟢 debug    | override_print       |       new_print.py:2  | override built-in print function
+14302 | 2025-05-27 17:23:49,216 | 🔵 info     | <module>             |            main.py:23 | idx: 5
+14302 | 2025-05-27 17:23:49,216 | 🟢 debug    | a_very_long_function |      tests/temp.py:16 | nam kha
+14302 | 2025-05-27 17:23:50,217 | 🔵 info     | <module>             |            main.py:23 | idx: 6
+14302 | 2025-05-27 17:23:50,217 | 🟢 debug    | newfunc              | tests/utils/use.py:6  | A very long path
+14302 | 2025-05-27 17:23:51,218 | 🔵 info     | <module>             |            main.py:23 | idx: 7
+14302 | 2025-05-27 17:23:51,219 | 🔴 error    | log_wrap             |              logab:0  | [Errno 2] No such file or directory: 'abc.txt'
+------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
 Traceback (most recent call last):
-  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 179, in log_wrap
+  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 180, in log_wrap
     yield
-  File "/home/namkha/Documents/mydev/logab/main.py", line 23, in <module>
-    print(10/x)
-          ~~^~
-ZeroDivisionError: division by zero
-------+-------------------------+-------------+-----------+------------+-----------------------------------------
-35814 | 2025-05-15 14:22:15,958 | 🔵 info     | log_wrap  |   logab:0  | Execution time 0.0085 seconds
+  File "/home/namkha/Documents/mydev/logab/main.py", line 38, in <module>
+    error_func()
+  File "/home/namkha/Documents/mydev/logab/tests/utils/error.py", line 2, in error_func
+    with open('abc.txt', 'r') as file:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
+------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+14302 | 2025-05-27 17:23:51,219 | 🔵 info     | log_wrap             |              logab:0  | Execution time 8.0150 seconds
