@@ -62,9 +62,6 @@ class ABFormatter(logging.Formatter):
         hor_line = f'-{placement}-'.join(hor_arr)
         return hor_line
         
-        
-        
-        
     def format(self, record):
         rewrite = False
         
@@ -79,7 +76,7 @@ class ABFormatter(logging.Formatter):
         else:
             record.pathname = lib_name
         record.lineno = record.lineno if record.pathname != lib_name else 0
-        
+        record.pathname = check_site_packages(record.pathname)    
         # Level emoji
         level_emoji = {
             "DEBUG":    "🟢",
@@ -154,6 +151,16 @@ def logab_custom_print(print_level, *args, **kwargs):
             'func_id': funcname,
             'line_id': lineno
         })
+
+def check_site_packages(path):
+    if "site-packages" in path:
+        parts = path.split("site-packages", 1)
+        new_path = "lib" + parts[1]
+        if new_path.startswith("/"):
+            new_path = "lib" + parts[1][1:]
+        return new_path
+    else:
+        return path
 
 @contextmanager
 def log_wrap(log_file='./app.log', log_level="info", print_level="info"):
