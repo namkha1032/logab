@@ -14,8 +14,10 @@ from tests.utils.use import newfunc
 def print_main():
     logger = log_init()
     logger.warning("In function of main.py")
-if __name__ == "__main__":
-    with log_wrap(log_level="debug", print_level="debug"):
+def exec_program():
+    with log_wrap(
+        # log_file="./app.log",
+        log_level="debug", print_level="debug"):
         logger = log_init()
         for idx, char in enumerate(range(100)):
             # supermegaprint(idx)
@@ -36,3 +38,8 @@ if __name__ == "__main__":
                 newfunc()
             if idx == 7:
                 error_func()
+
+
+
+if __name__ == "__main__":
+    exec_program()

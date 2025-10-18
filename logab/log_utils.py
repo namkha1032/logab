@@ -93,7 +93,7 @@ class ABFormatter(logging.Formatter):
             if self.max_lengths[field] < newlen:
                 rewrite = True
                 self.max_lengths[field] = max(self.max_lengths[field], newlen)
-        if rewrite:
+        if rewrite and self.log_file:
             self.rewrite_log()
         
         self._style._fmt = (
@@ -163,10 +163,10 @@ def check_site_packages(path):
         return path
 
 @contextmanager
-def log_wrap(log_file='./app.log', log_level="info", print_level="info"):
+def log_wrap(log_file=None, log_level="info", print_level="info"):
     # Set up log configuration
     log_level=getattr(logging, log_level.upper(), logging.info)
-    handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+    handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = ABFormatter(log_file)
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
@@ -175,12 +175,13 @@ def log_wrap(log_file='./app.log', log_level="info", print_level="info"):
     
     # Set up print configuration
     print_level=getattr(logging, print_level.upper(), logging.info)
+    original_print = builtins.print
     builtins.print = partial(logab_custom_print, print_level)
-    
     # Print table header
-    with open (log_file, 'w', encoding='utf-8') as file:
-        newstr = """PID | Time | Level | Function | File:No | Message\n----+------+-------+----------+---------+--------"""
-        file.write(newstr)
+    if log_file:
+        with open (log_file, 'w', encoding='utf-8') as file:
+            newstr = """PID | Time | Level | Function | File:No | Message\n----+------+-------+----------+---------+--------"""
+            file.write(newstr)
     
     start_time = time.time()
     try:
@@ -189,16 +190,23 @@ def log_wrap(log_file='./app.log', log_level="info", print_level="info"):
         # Catch and write error message
         tb = traceback.format_exc()
         root_logger.error(e)
-        with open(log_file, 'a', encoding='utf-8') as file:
-            hor_line = formatter.draw_horizontal_line(placement='+')
-            file.write(f"{hor_line}\n")
-            file.write(tb)
+        hor_line = formatter.draw_horizontal_line(placement='+')
+        if log_file:
+            with open(log_file, 'a', encoding='utf-8') as file:
+                file.write(f"{hor_line}\n")
+                file.write(tb)
+        else:
+            original_print(f"{hor_line}\n")
+            original_print(tb)
         exit()
     finally:
         # Write execution time
         end_time = time.time()
         hor_line = formatter.draw_horizontal_line(placement='+')
-        with open(log_file, 'a', encoding='utf-8') as file:
-            file.write(f"{hor_line}\n")
+        if log_file:
+            with open(log_file, 'a', encoding='utf-8') as file:
+                file.write(f"{hor_line}\n")
+        else:
+            original_print(f"{hor_line}")
         root_logger.info(f"Execution time {format_seconds(end_time-start_time)}")
 

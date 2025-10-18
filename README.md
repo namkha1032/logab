@@ -24,7 +24,7 @@ pip install logab
 `log_wrap()` is a ready-to-use wrapper with pre-configured logging. `log_wrap()` should be used **only once** at the program's entry point to configure logging globally. 
 
 **Parameters**:
-- `log_file`: file path for storing logs. Defaults to ***"./app.log"***.
+- `log_file`: file path for storing logs.  If not specified, logs will be printed to the terminal.
 - `log_level`: severity level of log messages being recorded. Defaults to ***"info"***
 - `print_level`: severity level of all messages output by `print()` command. Defaults ***"info"***
 

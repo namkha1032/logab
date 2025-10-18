@@ -1,30 +1,31 @@
-PID   | Time                    | Level       | Function             |               File:No | Message
-------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
-14302 | 2025-05-27 17:23:44,205 | 🔵 info     | <module>             |            main.py:23 | idx: 0
-14302 | 2025-05-27 17:23:45,206 | 🔵 info     | <module>             |            main.py:23 | idx: 1
-14302 | 2025-05-27 17:23:45,206 | 🟡 warning  | print_main           |            main.py:16 | In function of main.py
-14302 | 2025-05-27 17:23:46,206 | 🔵 info     | <module>             |            main.py:23 | idx: 2
-14302 | 2025-05-27 17:23:46,207 | 🟢 debug    | supermegaprint       |      tests/temp.py:12 | nam kha
-14302 | 2025-05-27 17:23:46,207 | 🟡 warning  | <module>             |            main.py:28 | Some warning message
-14302 | 2025-05-27 17:23:47,208 | 🔵 info     | <module>             |            main.py:23 | idx: 3
-14302 | 2025-05-27 17:23:47,208 | 🟣 critical | critical_function    |        critical.py:6  | Some critical message
-14302 | 2025-05-27 17:23:48,209 | 🔵 info     | <module>             |            main.py:23 | idx: 4
-14302 | 2025-05-27 17:23:48,215 | 🟢 debug    | override_print       |       new_print.py:2  | override built-in print function
-14302 | 2025-05-27 17:23:49,216 | 🔵 info     | <module>             |            main.py:23 | idx: 5
-14302 | 2025-05-27 17:23:49,216 | 🟢 debug    | a_very_long_function |      tests/temp.py:16 | nam kha
-14302 | 2025-05-27 17:23:50,217 | 🔵 info     | <module>             |            main.py:23 | idx: 6
-14302 | 2025-05-27 17:23:50,217 | 🟢 debug    | newfunc              | tests/utils/use.py:6  | A very long path
-14302 | 2025-05-27 17:23:51,218 | 🔵 info     | <module>             |            main.py:23 | idx: 7
-14302 | 2025-05-27 17:23:51,219 | 🔴 error    | log_wrap             |              logab:0  | [Errno 2] No such file or directory: 'abc.txt'
-------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+PID     | Time                    | Level       | Function             |               File:No | Message
+--------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+2683179 | 2025-10-18 20:02:59,856 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 0
+2683179 | 2025-10-18 20:03:00,857 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 1
+2683179 | 2025-10-18 20:03:00,857 | 🟡 warning  | print_main           |       main_func.py:16 | In function of main.py
+2683179 | 2025-10-18 20:03:01,858 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 2
+2683179 | 2025-10-18 20:03:01,858 | 🟢 debug    | supermegaprint       |      tests/temp.py:12 | nam kha
+2683179 | 2025-10-18 20:03:01,860 | 🟡 warning  | exec_program         |       main_func.py:30 | Some warning message
+2683179 | 2025-10-18 20:03:02,860 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 3
+2683179 | 2025-10-18 20:03:02,860 | 🟣 critical | critical_function    |        critical.py:6  | Some critical message
+2683179 | 2025-10-18 20:03:03,861 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 4
+2683179 | 2025-10-18 20:03:03,863 | 🟢 debug    | override_print       |       new_print.py:2  | override built-in print function
+2683179 | 2025-10-18 20:03:04,863 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 5
+2683179 | 2025-10-18 20:03:04,864 | 🟢 debug    | a_very_long_function |      tests/temp.py:16 | nam kha
+2683179 | 2025-10-18 20:03:05,865 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 6
+2683179 | 2025-10-18 20:03:05,865 | 🟢 debug    | newfunc              | tests/utils/use.py:6  | A very long path
+2683179 | 2025-10-18 20:03:06,866 | 🔵 info     | exec_program         |       main_func.py:25 | idx: 7
+2683179 | 2025-10-18 20:03:06,870 | 🔴 error    | log_wrap             |              logab:0  | [Errno 2] No such file or directory: 'abc.txt'
+--------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
 Traceback (most recent call last):
-  File "/home/namkha/Documents/mydev/logab/logab/log_utils.py", line 180, in log_wrap
+  File "/scratchdata1/users/a1956473/projects/logab/logab/log_utils.py", line 188, in log_wrap
     yield
-  File "/home/namkha/Documents/mydev/logab/main.py", line 38, in <module>
+  File "/scratchdata1/users/a1956473/projects/logab/main_func.py", line 40, in exec_program
     error_func()
-  File "/home/namkha/Documents/mydev/logab/tests/utils/error.py", line 2, in error_func
+    ~~~~~~~~~~^^
+  File "/scratchdata1/users/a1956473/projects/logab/tests/utils/error.py", line 2, in error_func
     with open('abc.txt', 'r') as file:
-         ^^^^^^^^^^^^^^^^^^^^
+         ~~~~^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
-------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
-14302 | 2025-05-27 17:23:51,219 | 🔵 info     | log_wrap             |              logab:0  | Execution time 8.0150 seconds
+--------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+2683179 | 2025-10-18 20:03:06,870 | 🔵 info     | log_wrap             |              logab:0  | Execution time 8.0143 seconds
