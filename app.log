@@ -1,34 +1,40 @@
-PID     | Time                    | Level       | Function             |               File:No | Message
---------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
-2716154 | 2025-10-18 20:32:22,197 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 0
-2716154 | 2025-10-18 20:32:23,198 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 1
-2716154 | 2025-10-18 20:32:23,198 | 🟡 warning  | print_main           |       main_func.py:16 | In function of main.py
-2716154 | 2025-10-18 20:32:24,199 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 2
-2716154 | 2025-10-18 20:32:24,199 | 🟢 debug    | supermegaprint       |      tests/temp.py:12 | nam kha
-2716154 | 2025-10-18 20:32:24,200 | 🟡 warning  | exec_program         |       main_func.py:27 | Some warning message
-2716154 | 2025-10-18 20:32:25,200 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 3
-2716154 | 2025-10-18 20:32:25,200 | 🟣 critical | critical_function    |        critical.py:6  | Some critical message
-2716154 | 2025-10-18 20:32:26,201 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 4
-2716154 | 2025-10-18 20:32:26,203 | 🟢 debug    | override_print       |       new_print.py:2  | override built-in print function
-2716154 | 2025-10-18 20:32:27,203 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 5
-2716154 | 2025-10-18 20:32:27,203 | 🟢 debug    | a_very_long_function |      tests/temp.py:16 | nam kha
-2716154 | 2025-10-18 20:32:28,204 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 6
-2716154 | 2025-10-18 20:32:28,204 | 🟢 debug    | newfunc              | tests/utils/use.py:6  | A very long path
-2716154 | 2025-10-18 20:32:29,205 | 🔵 info     | exec_program         |       main_func.py:22 | idx: 7
-2716154 | 2025-10-18 20:32:29,208 | 🔴 error    | log_wrap             |              logab:0  | [Errno 2] No such file or directory: 'abc.txt'
---------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
+PID    | Time                | Level    |  File:Nu | Function | Message
+-------+---------------------+----------+----------+----------+---------------------------------------------------
+318207 | 2025-11-08 11:59:26 | CRITICAL | logab:0  | log_wrap | Current Working Directory: "/scratchdata1/users/a1956473/projects/logab"
+318207 | 2025-11-08 11:59:27 | INFO     | main_debug.py:22 | exec_program | idx: 0
+318207 | 2025-11-08 11:59:28 | INFO     | main_debug.py:22 | exec_program | idx: 1
+318207 | 2025-11-08 11:59:28 | WARNING  | main_debug.py:16 | print_main   | In function of main.py
+318207 | 2025-11-08 11:59:29 | INFO     | main_debug.py:22 | exec_program | idx: 2
+318207 | 2025-11-08 11:59:29 | DEBUG    | tests/temp.py:12 | supermegaprint | nam kha
+318207 | 2025-11-08 11:59:29 | WARNING  | main_debug.py:27 | exec_program   | Some warning message
+-------+---------------------+----------+------------------+----------------+---------------------------------------------------
+318207 | 2025-11-08 11:59:29 | DEBUG    | main_debug.py:39 | exec_program   | this is a multiline message
+318207 | 2025-11-08 11:59:29 | DEBUG    | main_debug.py:39 | exec_program   |  this is line number 2
+-------+---------------------+----------+------------------+----------------+---------------------------------------------------
+318207 | 2025-11-08 11:59:30 | INFO     | main_debug.py:22 | exec_program   | idx: 3
+318207 | 2025-11-08 11:59:30 | CRITICAL |   critical.py:6  | critical_function | Some critical message
+318207 | 2025-11-08 11:59:31 | INFO     | main_debug.py:22 | exec_program      | idx: 4
+318207 | 2025-11-08 11:59:31 | DEBUG    |  new_print.py:2  | override_print    | override built-in print function
+318207 | 2025-11-08 11:59:32 | INFO     | main_debug.py:22 | exec_program      | idx: 5
+318207 | 2025-11-08 11:59:32 | DEBUG    | tests/temp.py:16 | a_very_long_function | nam kha
+-------+---------------------+----------+------------------+----------------------+---------------------------------------------------
+318207 | 2025-11-08 11:59:32 | DEBUG    | main_debug.py:39 | exec_program         | this is a multiline message
+318207 | 2025-11-08 11:59:32 | DEBUG    | main_debug.py:39 | exec_program         |  this is line number 2
+-------+---------------------+----------+------------------+----------------------+---------------------------------------------------
+318207 | 2025-11-08 11:59:33 | INFO     | main_debug.py:22 | exec_program         | idx: 6
+318207 | 2025-11-08 11:59:33 | DEBUG    | tests/utils/use.py:6  | newfunc              | A very long path
+318207 | 2025-11-08 11:59:34 | INFO     |      main_debug.py:22 | exec_program         | idx: 7
+318207 | 2025-11-08 11:59:34 | ERROR    |              logab:0  | log_wrap             | [Errno 2] No such file or directory: 'abc.txt'
+-------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
 Traceback (most recent call last):
-  File "/scratchdata1/users/a1956473/projects/logab/logab/log_utils.py", line 188, in log_wrap
+  File "/scratchdata1/users/a1956473/projects/logab/logab/log_utils.py", line 250, in log_wrap
     yield
-  File "/hpcfs/users/a1956473/projects/logab/main_exec.py", line 7, in <module>
+  File "/hpcfs/users/a1956473/projects/logab/main_debug.py", line 49, in <module>
     exec_program()
-    ~~~~~~~~~~~~^^
-  File "/scratchdata1/users/a1956473/projects/logab/main_func.py", line 37, in exec_program
+  File "/hpcfs/users/a1956473/projects/logab/main_debug.py", line 37, in exec_program
     error_func()
-    ~~~~~~~~~~^^
   File "/scratchdata1/users/a1956473/projects/logab/tests/utils/error.py", line 2, in error_func
     with open('abc.txt', 'r') as file:
-         ~~~~^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
---------+-------------------------+-------------+----------------------+-----------------------+-----------------------------------------
-2716154 | 2025-10-18 20:32:29,209 | 🔵 info     | log_wrap             |              logab:0  | Execution time 8.0115 seconds
+-------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+318207 | 2025-11-08 11:59:34 | INFO     |              logab:0  | log_wrap             | Execution time 8.0138 seconds
