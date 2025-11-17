@@ -193,11 +193,9 @@ class ABFormatter(logging.Formatter):
         # Modify record's path
         record = self.modify_record_path(record)
 
-        # Update max length
-        self.update_max_length(record)
-
-        # Create format
+        # Update max_length and apply format
         if "python3" not in record.pathname and "site-packages" not in record.pathname:
+            self.update_max_length(record)
             result_msg = self.apply_message_format(record)
             return result_msg
         else:
