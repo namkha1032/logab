@@ -66,6 +66,7 @@ class ABFormatter(logging.Formatter):
                 result.append(f"{remaining:.4f} seconds".rstrip('0').rstrip('.'))
         return " ".join(result)
 
+
     @staticmethod
     def modify_record_path(record):
         # Get abs and cwd path
@@ -82,13 +83,7 @@ class ABFormatter(logging.Formatter):
             record.pathname =  "logab"
         record.lineno = record.lineno if record.pathname !=  "logab" else 0
 
-        # Check if path from venv
-        site_idx = record.pathname.find('site-packages')
-        python_idx = record.pathname.find('python3.')
-        if site_idx != -1:
-            record.pathname = record.pathname[site_idx:]
-        elif python_idx != -1:
-            record.pathname = record.pathname[python_idx:]
+        # Print cwd and return
         record.msg = record.msg if record.msg != "logab_print_cwd" else f'Current Working Directory: "{cwd_path}"'
         return record
 
@@ -123,7 +118,9 @@ class ABFormatter(logging.Formatter):
                     else:
                         attr_list =line.split("|")
                         newline_arr = []
-                        for attr_idx, attr in enumerate(attr_list[:-1]):
+                        for attr_idx, attr in enumerate(attr_list):
+                            if attr_idx > 4:
+                                break
                             if attr_idx == self.file_index:
                                 lo_li_arr = attr.strip().split(":")
                                 new_li = lo_li_arr[0].rjust(self.max_lengths[self.attr_list[self.file_index]])
@@ -133,7 +130,7 @@ class ABFormatter(logging.Formatter):
                                 attr = attr.strip()
                                 attr = attr.ljust(self.max_lengths[self.attr_list[attr_idx + (1 if attr_idx > self.file_index else 0)]])
                                 newline_arr.append(attr)
-                        newline_arr.append(attr_list[-1].strip())
+                        newline_arr.append("|".join(attr_list[5:]).strip())
                         file_backup.write(f"{' | '.join(newline_arr)}\n")
         try:
             shutil.copyfile(bak_path, self.log_file)
@@ -200,7 +197,7 @@ class ABFormatter(logging.Formatter):
         self.update_max_length(record)
 
         # Create format
-        if "python" not in record.pathname:
+        if "python3" not in record.pathname and "site-packages" not in record.pathname:
             result_msg = self.apply_message_format(record)
             return result_msg
         else:

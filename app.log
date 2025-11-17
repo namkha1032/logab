@@ -1,40 +1,26 @@
-PID    | Time                | Level    |  File:Nu | Function | Message
--------+---------------------+----------+----------+----------+---------------------------------------------------
-318207 | 2025-11-08 11:59:26 | CRITICAL | logab:0  | log_wrap | Current Working Directory: "/scratchdata1/users/a1956473/projects/logab"
-318207 | 2025-11-08 11:59:27 | INFO     | main_debug.py:22 | exec_program | idx: 0
-318207 | 2025-11-08 11:59:28 | INFO     | main_debug.py:22 | exec_program | idx: 1
-318207 | 2025-11-08 11:59:28 | WARNING  | main_debug.py:16 | print_main   | In function of main.py
-318207 | 2025-11-08 11:59:29 | INFO     | main_debug.py:22 | exec_program | idx: 2
-318207 | 2025-11-08 11:59:29 | DEBUG    | tests/temp.py:12 | supermegaprint | nam kha
-318207 | 2025-11-08 11:59:29 | WARNING  | main_debug.py:27 | exec_program   | Some warning message
--------+---------------------+----------+------------------+----------------+---------------------------------------------------
-318207 | 2025-11-08 11:59:29 | DEBUG    | main_debug.py:39 | exec_program   | this is a multiline message
-318207 | 2025-11-08 11:59:29 | DEBUG    | main_debug.py:39 | exec_program   |  this is line number 2
--------+---------------------+----------+------------------+----------------+---------------------------------------------------
-318207 | 2025-11-08 11:59:30 | INFO     | main_debug.py:22 | exec_program   | idx: 3
-318207 | 2025-11-08 11:59:30 | CRITICAL |   critical.py:6  | critical_function | Some critical message
-318207 | 2025-11-08 11:59:31 | INFO     | main_debug.py:22 | exec_program      | idx: 4
-318207 | 2025-11-08 11:59:31 | DEBUG    |  new_print.py:2  | override_print    | override built-in print function
-318207 | 2025-11-08 11:59:32 | INFO     | main_debug.py:22 | exec_program      | idx: 5
-318207 | 2025-11-08 11:59:32 | DEBUG    | tests/temp.py:16 | a_very_long_function | nam kha
--------+---------------------+----------+------------------+----------------------+---------------------------------------------------
-318207 | 2025-11-08 11:59:32 | DEBUG    | main_debug.py:39 | exec_program         | this is a multiline message
-318207 | 2025-11-08 11:59:32 | DEBUG    | main_debug.py:39 | exec_program         |  this is line number 2
--------+---------------------+----------+------------------+----------------------+---------------------------------------------------
-318207 | 2025-11-08 11:59:33 | INFO     | main_debug.py:22 | exec_program         | idx: 6
-318207 | 2025-11-08 11:59:33 | DEBUG    | tests/utils/use.py:6  | newfunc              | A very long path
-318207 | 2025-11-08 11:59:34 | INFO     |      main_debug.py:22 | exec_program         | idx: 7
-318207 | 2025-11-08 11:59:34 | ERROR    |              logab:0  | log_wrap             | [Errno 2] No such file or directory: 'abc.txt'
--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
-Traceback (most recent call last):
-  File "/scratchdata1/users/a1956473/projects/logab/logab/log_utils.py", line 250, in log_wrap
-    yield
-  File "/hpcfs/users/a1956473/projects/logab/main_debug.py", line 49, in <module>
-    exec_program()
-  File "/hpcfs/users/a1956473/projects/logab/main_debug.py", line 37, in exec_program
-    error_func()
-  File "/scratchdata1/users/a1956473/projects/logab/tests/utils/error.py", line 2, in error_func
-    with open('abc.txt', 'r') as file:
-FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt'
--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
-318207 | 2025-11-08 11:59:34 | INFO     |              logab:0  | log_wrap             | Execution time 8.0138 seconds
+PID     | Time                | Level    |               File:Nu | Function             | Message
+--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+1047136 | 2025-11-17 16:01:18 | CRITICAL |              logab:0  | log_wrap             | Current Working Directory: "/hpcfs/users/a1956473/projects/logab"
+1047136 | 2025-11-17 16:01:19 | INFO     |      main_debug.py:22 | exec_program         | idx: 0
+1047136 | 2025-11-17 16:01:20 | INFO     |      main_debug.py:22 | exec_program         | idx: 1
+1047136 | 2025-11-17 16:01:20 | WARNING  |      main_debug.py:16 | print_main           | In function of main.py
+1047136 | 2025-11-17 16:01:21 | INFO     |      main_debug.py:22 | exec_program         | idx: 2
+1047136 | 2025-11-17 16:01:21 | DEBUG    |      tests/temp.py:12 | supermegaprint       | nam kha
+1047136 | 2025-11-17 16:01:21 | WARNING  |      main_debug.py:27 | exec_program         | Some warn | ing message
+--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+1047136 | 2025-11-17 16:01:21 | DEBUG    |      main_debug.py:39 | exec_program         | this is a multiline message
+1047136 | 2025-11-17 16:01:21 | DEBUG    |      main_debug.py:39 | exec_program         | this is line number 2
+--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+1047136 | 2025-11-17 16:01:22 | INFO     |      main_debug.py:22 | exec_program         | idx: 3
+1047136 | 2025-11-17 16:01:22 | CRITICAL |        critical.py:6  | critical_function    | Some critical message
+1047136 | 2025-11-17 16:01:23 | INFO     |      main_debug.py:22 | exec_program         | idx: 4
+1047136 | 2025-11-17 16:01:23 | DEBUG    |       new_print.py:2  | override_print       | override built-in print function
+1047136 | 2025-11-17 16:01:24 | INFO     |      main_debug.py:22 | exec_program         | idx: 5
+1047136 | 2025-11-17 16:01:24 | DEBUG    |      tests/temp.py:16 | a_very_long_function | nam kha
+--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+1047136 | 2025-11-17 16:01:24 | DEBUG    |      main_debug.py:39 | exec_program         | this is a multiline message
+1047136 | 2025-11-17 16:01:24 | DEBUG    |      main_debug.py:39 | exec_program         | this is line number 2
+--------+---------------------+----------+-----------------------+----------------------+---------------------------------------------------
+1047136 | 2025-11-17 16:01:25 | INFO     |      main_debug.py:22 | exec_program         | idx: 6
+1047136 | 2025-11-17 16:01:25 | DEBUG    | tests/utils/use.py:6  | newfunc              | A very long path
+1047136 | 2025-11-17 16:01:26 | INFO     |      main_debug.py:22 | exec_program         | idx: 7

@@ -24,7 +24,7 @@ def exec_program():
             print_main()
         if idx == 2:
             supermegaprint()
-            logger.warning(f"Some warning message")
+            logger.warning(f"Some warn | ing message")
         if idx == 3:
             critical_function()
         if idx == 4:
@@ -44,6 +44,6 @@ def exec_program():
 
 if __name__ == "__main__":
     with log_wrap(
-        # log_file="/hpcfs/users/a1956473/projects/logab/app.log",
+        log_file="/hpcfs/users/a1956473/projects/logab/app.log",
         log_level="debug", print_level="debug"):
         exec_program()
