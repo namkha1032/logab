@@ -44,6 +44,6 @@ def exec_program():
 
 if __name__ == "__main__":
     with log_wrap(
-        log_file="/hpcfs/users/a1956473/projects/logab/app.log",
+        log_file="app.log",
         log_level="debug", print_level="debug"):
         exec_program()

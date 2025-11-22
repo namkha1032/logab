@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: logab
-Version: 0.0.9
+Version: 0.1.1
 Summary: A lightweight Python package for structured logging with automatic balance (ab) formatting for cleaner, more readable output.
 Author-email: Nam Kha Nguyen <namkha1032@gmail.com>
 License: MIT License

@@ -14,8 +14,9 @@ original_print = builtins.print
 class ABFormatter(logging.Formatter):
     file_index = 3
     nu_index = 4
-    def __init__(self, log_file):
+    def __init__(self, log_file, is_format_lib):
         self.log_file = log_file
+        self.is_format_lib = is_format_lib
         self.attr_list = ['process', 'asctime', 'levelname', 'pathname', 'lineno', 'funcName']
         init_len = [len(str(os.getpid())), 19, 8, 5, 2, 8]
         self.max_lengths = {key:val for key, val in zip(self.attr_list, init_len)}
@@ -194,19 +195,21 @@ class ABFormatter(logging.Formatter):
         record = self.modify_record_path(record)
 
         # Update max_length and apply format
-        if "python3" not in record.pathname and "site-packages" not in record.pathname:
-            self.update_max_length(record)
+        is_user_log = "python3" not in record.pathname and "site-packages" not in record.pathname
+        if is_user_log or self.is_format_lib:
+            if is_user_log:
+                self.update_max_length(record)
             result_msg = self.apply_message_format(record)
             return result_msg
         else:
             return record.getMessage()
 
 @contextmanager
-def log_wrap(log_file=None, log_level="info", print_level="info"):
+def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=False):
     # Set up log configuration
     log_level=getattr(logging, log_level.upper(), logging.info)
     handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
-    formatter = ABFormatter(log_file)
+    formatter = ABFormatter(log_file=log_file, is_format_lib=is_format_lib)
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
