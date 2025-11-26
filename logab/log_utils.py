@@ -31,7 +31,9 @@ class ABFormatter(logging.Formatter):
         sep = kwargs.get('sep', ' ')
         end = kwargs.get('end', '')
         message = sep.join(str(arg) for arg in args) + end
-        frame = traceback.extract_stack()[-2]
+        frame_list = traceback.extract_stack()
+        is_custom_print = all(na in frame_list[-2].name for na in ["custom", "print"])
+        frame = frame_list[-2] if not is_custom_print else frame_list[-3]
         filename = frame.filename
         funcname = frame.name
         lineno = frame.lineno
