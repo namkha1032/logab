@@ -239,29 +239,32 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
 
     # Print current working directory
     root_logger.critical("logab_print_cwd")
+    
+    yield
 
-    # Print in debug mode (no calculating execution time)
-    if 'debugpy' in sys.modules:
-        yield
-    # Print in normal mode (calculating execution time)
-    else:
-        start_time = time.time()
-        try:
-            yield
-        except Exception as e:
-            # Catch and write error message
-            root_logger.error(e)
-            hor_line = formatter.draw_horizontal_line()
-            tb = traceback.format_exc()
-            formatter.print_raw(hor_line)
-            formatter.print_raw(tb, end_char="")
-            exit()
-        finally:
-            # Write execution time
-            end_time = time.time()
-            hor_line = formatter.draw_horizontal_line()
-            formatter.print_raw(hor_line)
-            root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
+    # # legacy code
+    # # Print in debug mode (no calculating execution time)
+    # if 'debugpy' in sys.modules:
+    #     yield
+    # # Print in normal mode (calculating execution time)
+    # else:
+    #     start_time = time.time()
+    #     try:
+    #         yield
+    #     except Exception as e:
+    #         # Catch and write error message
+    #         root_logger.error(e)
+    #         hor_line = formatter.draw_horizontal_line()
+    #         tb = traceback.format_exc()
+    #         formatter.print_raw(hor_line)
+    #         formatter.print_raw(tb, end_char="")
+    #         exit()
+    #     finally:
+    #         # Write execution time
+    #         end_time = time.time()
+    #         hor_line = formatter.draw_horizontal_line()
+    #         formatter.print_raw(hor_line)
+    #         root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
 
 def log_init():
     logger = logging.getLogger(__name__)
