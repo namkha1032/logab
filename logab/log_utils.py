@@ -229,7 +229,7 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
         ('File:Nu', formatter.max_lengths['pathname'] + formatter.max_lengths['lineno'] + 1), 
         ('Function', formatter.max_lengths['funcName']), 
         ('Message', 0)
-        ]
+    ]
     header_list_pad = []
     for idx, header_item in enumerate(header_list):
         pad_header = header_item[0].ljust(header_item[1]) if idx != formatter.file_index else header_item[0].rjust(header_item[1])  
@@ -240,31 +240,31 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
     # Print current working directory
     root_logger.critical("logab_print_cwd")
     
-    yield
+    # yield
 
-    # # legacy code
-    # # Print in debug mode (no calculating execution time)
-    # if 'debugpy' in sys.modules:
-    #     yield
-    # # Print in normal mode (calculating execution time)
-    # else:
-    #     start_time = time.time()
-    #     try:
-    #         yield
-    #     except Exception as e:
-    #         # Catch and write error message
-    #         root_logger.error(e)
-    #         hor_line = formatter.draw_horizontal_line()
-    #         tb = traceback.format_exc()
-    #         formatter.print_raw(hor_line)
-    #         formatter.print_raw(tb, end_char="")
-    #         exit()
-    #     finally:
-    #         # Write execution time
-    #         end_time = time.time()
-    #         hor_line = formatter.draw_horizontal_line()
-    #         formatter.print_raw(hor_line)
-    #         root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
+    # legacy code
+    # Print in debug mode (no calculating execution time)
+    if 'debugpy' in sys.modules:
+        yield
+    # Print in normal mode (calculating execution time)
+    else:
+        start_time = time.time()
+        try:
+            yield
+        except Exception as e:
+            # Catch and write error message
+            root_logger.error(e)
+            hor_line = formatter.draw_horizontal_line()
+            tb = traceback.format_exc()
+            formatter.print_raw(hor_line)
+            formatter.print_raw(tb, end_char="")
+            exit()
+        finally:
+            # Write execution time
+            end_time = time.time()
+            hor_line = formatter.draw_horizontal_line()
+            formatter.print_raw(hor_line)
+            root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
 
 def log_init():
     logger = logging.getLogger(__name__)

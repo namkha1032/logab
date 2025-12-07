@@ -1,6 +1,6 @@
 [project]
 name = "logab" 
-version = "0.1.3"
+version = "0.1.4"
 description = "A lightweight Python package for structured logging with automatic balance (ab) formatting for cleaner, more readable output."
 readme = "README.md"
 authors = [
