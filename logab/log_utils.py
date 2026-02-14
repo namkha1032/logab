@@ -206,16 +206,27 @@ class ABFormatter(logging.Formatter):
         else:
             return record.getMessage()
 
+class ABFilter(logging.Filter):
+    def __init__(self, ignore_libs = []):
+        super().__init__()
+        self.ignore_libs = ignore_libs
+
+    def filter(self, record):
+        is_log = False if (hasattr(record, 'file_id') and any(lib in record.file_id for lib in self.ignore_libs)) else True
+        return is_log
+
 @contextmanager
-def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=False):
+def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=False, ignore_libs=[]):
     # Set up log configuration
     log_level=getattr(logging, log_level.upper(), logging.info)
     handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = ABFormatter(log_file=log_file, is_format_lib=is_format_lib)
+    filterer = ABFilter(ignore_libs=ignore_libs)
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
+    root_logger.addFilter(filterer)
 
     # Set up print configuration
     print_level=getattr(logging, print_level.upper(), logging.info)
