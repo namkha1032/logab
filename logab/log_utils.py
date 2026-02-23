@@ -79,8 +79,14 @@ class ABFormatter(logging.Formatter):
         abs_path = os.path.join("/", "/".join(abs_list))
         cwd_path = os.path.join("/", "/".join(cwd_list))
 
+        site_index = next((i for i, fold in enumerate(abs_list) if "site-packages" in fold), -1)
+        python_index = next((i for i, fold in enumerate(abs_list) if "python" in fold), -1)
         # Check if path from logab
-        if record.module != "log_utils" or hasattr(record, 'func_id'):
+        if site_index != -1:
+            record.pathname = "/".join(abs_list[site_index:])
+        elif python_index != -1:
+            record.pathname = "/".join(abs_list[python_index:])
+        elif record.module != "log_utils" or hasattr(record, 'func_id'):
             record.pathname = os.path.relpath(abs_path, start=cwd_path)
         else:
             record.pathname =  "logab"
@@ -179,7 +185,6 @@ class ABFormatter(logging.Formatter):
         return result_msg
 
     # override method
-    
     def formatTime(self, record, datefmt=None):
         ct = datetime.fromtimestamp(record.created)
         if datefmt:
@@ -192,10 +197,8 @@ class ABFormatter(logging.Formatter):
             record.pathname = record.file_id
             record.funcName = record.func_id
             record.lineno = record.line_id
-        
         # Modify record's path
         record = self.modify_record_path(record)
-
         # Update max_length and apply format
         is_user_log = "python3" not in record.pathname and "site-packages" not in record.pathname
         if is_user_log or self.is_format_lib:
