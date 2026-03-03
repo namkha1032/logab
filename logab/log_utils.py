@@ -2,7 +2,6 @@ import builtins
 import logging
 import os
 import shutil
-import sys
 import time
 import traceback
 from contextlib import contextmanager
@@ -18,15 +17,17 @@ class ABFormatter(logging.Formatter):
         self.log_file = log_file
         self.is_format_lib = is_format_lib
         self.attr_list = ['process', 'asctime', 'levelname', 'pathname', 'lineno', 'funcName']
-        init_len = [len(str(os.getpid())), 19, 8, 5, 2, 8]
+        init_len = [len(str(os.getpid())), 19, 4, 7, 2, 8]
         self.max_lengths = {key:val for key, val in zip(self.attr_list, init_len)}
         self.just_multiple_lines = False
+        self.cwf = os.getcwd().split("/")[-1]
         super().__init__()
     
     # static method
 
     @staticmethod
     def logab_custom_print(print_level, *args, **kwargs):
+
         # Combine arguments into a single message
         sep = kwargs.get('sep', ' ')
         end = kwargs.get('end', '')
@@ -37,7 +38,7 @@ class ABFormatter(logging.Formatter):
         filename = frame.filename
         funcname = frame.name
         lineno = frame.lineno
-        
+
         # Log the message at the specified print_level
         logging.log(print_level, message, extra={
                 'file_id': filename,
@@ -69,34 +70,26 @@ class ABFormatter(logging.Formatter):
                 result.append(f"{remaining:.4f} seconds".rstrip('0').rstrip('.'))
         return " ".join(result)
 
-
-    @staticmethod
-    def modify_record_path(record):
-        # Get abs and cwd path
-        abs_list = record.pathname.split("/")
-        cwd_list = os.getcwd().split("/")
-        cwd_list[1] = abs_list[1]
-        abs_path = os.path.join("/", "/".join(abs_list))
-        cwd_path = os.path.join("/", "/".join(cwd_list))
-
-        site_index = next((i for i, fold in enumerate(abs_list) if "site-packages" in fold), -1)
-        python_index = next((i for i, fold in enumerate(abs_list) if "python" in fold), -1)
-        # Check if path from logab
-        if site_index != -1:
-            record.pathname = "/".join(abs_list[site_index:])
-        elif python_index != -1:
-            record.pathname = "/".join(abs_list[python_index:])
-        elif record.module != "log_utils" or hasattr(record, 'func_id'):
-            record.pathname = os.path.relpath(abs_path, start=cwd_path)
-        else:
-            record.pathname =  "logab"
-        record.lineno = record.lineno if record.pathname !=  "logab" else 0
-
-        # Print cwd and return
-        record.msg = record.msg if record.msg != "logab_print_cwd" else f'Current Working Directory: "{cwd_path}"'
-        return record
-
     # instance method
+
+    def modify_record_path(self, record):
+        abs_list = record.pathname.split("/")
+        path_type = "user" # user | logab | python
+        for idx, fold in enumerate(reversed(abs_list), start=1):
+            if "logab" in fold:
+                path_type = "logab"
+                record.pathname =  "logab"
+                record.lineno = 0
+                break
+            elif "site-packages" in fold or "python3" in fold:
+                path_type = "python"
+                record.pathname = "/".join(abs_list[-idx:])
+                break
+            elif fold == self.cwf:
+                path_type = "user"
+                record.pathname = "/".join(abs_list[-(idx-1):])
+                break
+        return path_type, record
 
     def draw_horizontal_line(self):
         placement='+'
@@ -158,9 +151,9 @@ class ABFormatter(logging.Formatter):
             self.rewrite_log()
 
     def apply_message_format(self, record):
-        record.msg = record.getMessage().strip()
 
         # Define message format
+        record.msg = record.getMessage().strip()
         self._style._fmt = (
             f'%(process){self.max_lengths["process"]}d | '
             f'%(asctime){self.max_lengths["asctime"]}s | '
@@ -174,17 +167,22 @@ class ABFormatter(logging.Formatter):
         old_msg_list = record.getMessage().split("\n")
         new_msg_list = []
         result_msg = ""
-        upper_line = f"{self.draw_horizontal_line()}\n" if (len(old_msg_list) > 1 and self.just_multiple_lines == False) else ""
-        lower_line = f"\n{self.draw_horizontal_line()}" if len(old_msg_list) > 1 else ""
         for msg in old_msg_list:
             record.msg = msg
             new_msg_list.append(super().format(record))
-        msg_rows = "\n".join(new_msg_list)
+        
+        # Handle multi-line horizontal line
+        upper_line = f"{self.draw_horizontal_line()}\n" if (len(old_msg_list) > 1 and self.just_multiple_lines == False) else ""
+        lower_line = f"\n{self.draw_horizontal_line()}" if len(old_msg_list) > 1 else ""
         self.just_multiple_lines = True if len(old_msg_list) > 1 else False
+
+        # Form final message
+        msg_rows = "\n".join(new_msg_list)
         result_msg = f"{upper_line}{msg_rows}{lower_line}"
         return result_msg
 
     # override method
+    
     def formatTime(self, record, datefmt=None):
         ct = datetime.fromtimestamp(record.created)
         if datefmt:
@@ -192,18 +190,13 @@ class ABFormatter(logging.Formatter):
         return ct.strftime("%Y-%m-%d %H:%M:%S")
     
     def format(self, record):
-        # Forward logab to original location
         if hasattr(record, 'func_id'):
             record.pathname = record.file_id
             record.funcName = record.func_id
             record.lineno = record.line_id
-        # Modify record's path
-        record = self.modify_record_path(record)
-        # Update max_length and apply format
-        is_user_log = "python3" not in record.pathname and "site-packages" not in record.pathname
-        if is_user_log or self.is_format_lib:
-            if is_user_log:
-                self.update_max_length(record)
+        path_type, record = self.modify_record_path(record)
+        if path_type != "python" or self.is_format_lib:
+            self.update_max_length(record)
             result_msg = self.apply_message_format(record)
             return result_msg
         else:
@@ -222,12 +215,14 @@ class ABFilter(logging.Filter):
 def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=False, ignore_libs=[]):
     # Set up log configuration
     log_level=getattr(logging, log_level.upper(), logging.info)
-    handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
     formatter = ABFormatter(log_file=log_file, is_format_lib=is_format_lib)
+    handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
+
+    # Set up log filter
     if len(ignore_libs) > 0:
         filterer = ABFilter(ignore_libs=ignore_libs)
         root_logger.addFilter(filterer)
@@ -240,7 +235,7 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
     header_list = [
         ('PID', formatter.max_lengths['process']), 
         ('Time', formatter.max_lengths['asctime']), 
-        ('Level', formatter.max_lengths['levelname']), 
+        ('Lvl', formatter.max_lengths['levelname']), 
         ('File:Nu', formatter.max_lengths['pathname'] + formatter.max_lengths['lineno'] + 1), 
         ('Function', formatter.max_lengths['funcName']), 
         ('Message', 0)
@@ -252,35 +247,24 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
     header_str = f"{' | '.join(header_list_pad)}\n{formatter.draw_horizontal_line()}"
     formatter.print_raw(header_str, mode='w')
 
-    # Print current working directory
-    root_logger.critical("logab_print_cwd")
-    
-    # yield
-
-    # legacy code
-    # Print in debug mode (no calculating execution time)
-    if 'debugpy' in sys.modules:
+    start_time = time.time()
+    try:
         yield
-    # Print in normal mode (calculating execution time)
-    else:
-        start_time = time.time()
-        try:
-            yield
-        except Exception as e:
-            # Catch and write error message
-            root_logger.error(e)
-            hor_line = formatter.draw_horizontal_line()
-            tb = traceback.format_exc()
-            formatter.print_raw(hor_line)
-            formatter.print_raw(tb, end_char="")
-            exit()
-        finally:
-            # Write execution time
-            end_time = time.time()
-            hor_line = formatter.draw_horizontal_line()
-            formatter.print_raw(hor_line)
-            root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
+    except Exception as e:
+        # Catch and write error message
+        root_logger.error(e)
+        hor_line = formatter.draw_horizontal_line()
+        tb = traceback.format_exc()
+        formatter.print_raw(hor_line)
+        formatter.print_raw(tb, end_char="")
+        exit()
+    finally:
+        # Write execution time
+        end_time = time.time()
+        hor_line = formatter.draw_horizontal_line()
+        formatter.print_raw(hor_line)
+        root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
 
 def log_init():
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger()
     return logger
