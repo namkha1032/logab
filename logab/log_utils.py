@@ -13,21 +13,21 @@ original_print = builtins.print
 class ABFormatter(logging.Formatter):
     file_index = 3
     nu_index = 4
+
     def __init__(self, log_file, is_format_lib):
+        init_len = [len(str(os.getpid())), 19, 4, 7, 2, 8]
         self.log_file = log_file
         self.is_format_lib = is_format_lib
         self.attr_list = ['process', 'asctime', 'levelname', 'pathname', 'lineno', 'funcName']
-        init_len = [len(str(os.getpid())), 19, 4, 7, 2, 8]
         self.max_lengths = {key:val for key, val in zip(self.attr_list, init_len)}
         self.just_multiple_lines = False
         self.cwf = os.getcwd().split("/")[-1]
         super().__init__()
-    
-    # static method
+
+    # -------------------- methods static --------------------
 
     @staticmethod
     def logab_custom_print(print_level, *args, **kwargs):
-
         # Combine arguments into a single message
         sep = kwargs.get('sep', ' ')
         end = kwargs.get('end', '')
@@ -70,18 +70,18 @@ class ABFormatter(logging.Formatter):
                 result.append(f"{remaining:.4f} seconds".rstrip('0').rstrip('.'))
         return " ".join(result)
 
-    # instance method
+    # -------------------- methods instance --------------------
 
     def modify_record_path(self, record):
         abs_list = record.pathname.split("/")
         path_type = "user" # user | logab | python
         for idx, fold in enumerate(reversed(abs_list), start=1):
-            if "logab" in fold:
+            if fold == "logab":
                 path_type = "logab"
                 record.pathname =  "logab"
                 record.lineno = 0
                 break
-            elif "site-packages" in fold or "python3" in fold:
+            elif fold == "site-packages" or "python3" in fold:
                 path_type = "python"
                 record.pathname = "/".join(abs_list[-idx:])
                 break
@@ -90,22 +90,16 @@ class ABFormatter(logging.Formatter):
                 record.pathname = "/".join(abs_list[-(idx-1):])
                 break
         return path_type, record
-
-    def draw_horizontal_line(self):
-        placement='+'
-        hor_arr = ['-'*(self.max_lengths[item]) for item in self.attr_list]
-        hor_arr[self.file_index] = hor_arr[self.file_index] + hor_arr[self.nu_index] + '-'
-        hor_arr.pop(self.nu_index)
-        hor_arr.append('-'*50)
-        hor_line = f'-{placement}-'.join(hor_arr)
-        return hor_line
     
-    def print_raw(self, content, mode='a', end_char="\n"):
-        if self.log_file:
-            with open(self.log_file, mode, encoding='utf-8') as file:
-                file.write(f"{content}{end_char}")
-        else:
-            original_print(f"{content}{end_char}", end="", flush=True)
+    def update_max_length(self, record):
+        rewrite=False
+        for field in self.max_lengths:
+            newlen = len(str(getattr(record, field, '')))
+            if self.max_lengths[field] < newlen:
+                rewrite = True
+                self.max_lengths[field] = max(self.max_lengths[field], newlen)
+        if rewrite and self.log_file:
+            self.rewrite_log()
 
     def rewrite_log(self):
         bak_path = f"{self.log_file}.bak"
@@ -140,18 +134,7 @@ class ABFormatter(logging.Formatter):
         except Exception as e:
             pass
 
-    def update_max_length(self, record):
-        rewrite=False
-        for field in self.max_lengths:
-            newlen = len(str(getattr(record, field, '')))
-            if self.max_lengths[field] < newlen:
-                rewrite = True
-                self.max_lengths[field] = max(self.max_lengths[field], newlen)
-        if rewrite and self.log_file:
-            self.rewrite_log()
-
     def apply_message_format(self, record):
-
         # Define message format
         record.msg = record.getMessage().strip()
         self._style._fmt = (
@@ -162,7 +145,7 @@ class ABFormatter(logging.Formatter):
             f'%(funcName)-{self.max_lengths["funcName"]}s | '
             f'%(message)s'
         )
-
+        
         # Handle multi-line message
         old_msg_list = record.getMessage().split("\n")
         new_msg_list = []
@@ -175,14 +158,32 @@ class ABFormatter(logging.Formatter):
         upper_line = f"{self.draw_horizontal_line()}\n" if (len(old_msg_list) > 1 and self.just_multiple_lines == False) else ""
         lower_line = f"\n{self.draw_horizontal_line()}" if len(old_msg_list) > 1 else ""
         self.just_multiple_lines = True if len(old_msg_list) > 1 else False
-
+        
         # Form final message
         msg_rows = "\n".join(new_msg_list)
         result_msg = f"{upper_line}{msg_rows}{lower_line}"
         return result_msg
 
-    # override method
+    # -------------------- methods utils --------------------
+
+    def draw_horizontal_line(self):
+        placement='+'
+        hor_arr = ['-'*(self.max_lengths[item]) for item in self.attr_list]
+        hor_arr[self.file_index] = hor_arr[self.file_index] + hor_arr[self.nu_index] + '-'
+        hor_arr.pop(self.nu_index)
+        hor_arr.append('-'*50)
+        hor_line = f'-{placement}-'.join(hor_arr)
+        return hor_line
     
+    def print_raw(self, content, mode='a', end_char="\n"):
+        if self.log_file:
+            with open(self.log_file, mode, encoding='utf-8') as file:
+                file.write(f"{content}{end_char}")
+        else:
+            original_print(f"{content}{end_char}", end="", flush=True)
+    
+    # -------------------- methods overwrite --------------------
+
     def formatTime(self, record, datefmt=None):
         ct = datetime.fromtimestamp(record.created)
         if datefmt:
@@ -226,11 +227,11 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
     if len(ignore_libs) > 0:
         filterer = ABFilter(ignore_libs=ignore_libs)
         root_logger.addFilter(filterer)
-
+    
     # Set up print configuration
     print_level=getattr(logging, print_level.upper(), logging.info)
     builtins.print = partial(ABFormatter.logab_custom_print, print_level)
-
+    
     # Print table header
     header_list = [
         ('PID', formatter.max_lengths['process']), 
