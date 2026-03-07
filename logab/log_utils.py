@@ -136,7 +136,7 @@ class ABFormatter(logging.Formatter):
 
     def apply_message_format(self, record):
         # Define message format
-        record.msg = record.getMessage().strip()
+        record.msg = record.getMessage().strip("\n")
         self._style._fmt = (
             f'%(process){self.max_lengths["process"]}d | '
             f'%(asctime){self.max_lengths["asctime"]}s | '
