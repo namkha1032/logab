@@ -7,12 +7,11 @@ import traceback
 from contextlib import contextmanager
 from functools import partial
 from datetime import datetime
-
-original_print = builtins.print
     
 class ABFormatter(logging.Formatter):
     file_index = 3
     nu_index = 4
+    original_print = builtins.print
 
     def __init__(self, log_file, is_format_lib):
         init_len = [len(str(os.getpid())), 19, 4, 7, 2, 8]
@@ -180,7 +179,7 @@ class ABFormatter(logging.Formatter):
             with open(self.log_file, mode, encoding='utf-8') as file:
                 file.write(f"{content}{end_char}")
         else:
-            original_print(f"{content}{end_char}", end="", flush=True)
+            self.original_print(f"{content}{end_char}", end="", flush=True)
     
     # -------------------- methods overwrite --------------------
 
@@ -220,6 +219,11 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
     handler = logging.StreamHandler() if log_file == None else logging.FileHandler(log_file, mode='a', encoding='utf-8')
     handler.setFormatter(formatter)
     root_logger = logging.getLogger()
+
+    # Clear existing handlers and filters
+    root_logger.handlers.clear()
+    root_logger.filters.clear()
+
     root_logger.setLevel(log_level)
     root_logger.addHandler(handler)
 
@@ -265,6 +269,10 @@ def log_wrap(log_file=None, log_level="info", print_level="info", is_format_lib=
         hor_line = formatter.draw_horizontal_line()
         formatter.print_raw(hor_line)
         root_logger.info(f"Execution time {ABFormatter.format_seconds(end_time-start_time)}")
+        builtins.print = formatter.original_print
+        root_logger.removeHandler(handler)
+        if len(ignore_libs) > 0:
+            root_logger.removeFilter(filterer)
 
 def log_init():
     logger = logging.getLogger()
